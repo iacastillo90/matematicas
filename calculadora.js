@@ -1,33 +1,31 @@
-function sumar(a, b) {
-    return a + b;
-  }
-  
-  function restar(a, b) {
-    return a - b;
-  }
-  
-  function multiplicar(a, b) {
-    return a * b;
-  }
-  
-  function dividir(a, b) {
-    if (b === 0) throw new Error("División por cero");
-    return a / b;
-  }
+const pantalla = document.getElementById('pantalla');
+const botones = document.querySelectorAll('.btn');
+let operacion = '';
 
-  function potencia(a, b) {
-    return Math.pow(a, b);
-  }
+function actualizarPantalla(valor) {
+  pantalla.value = valor;
+}
 
-function raizCuadrada(a) {
-    return Math.sqrt(a);
-  }
-  
-  module.exports = {
-    sumar,
-    restar,
-    multiplicar,
-    dividir,
-    potencia,
-    raizCuadrada
-  };
+botones.forEach(boton => {
+  boton.addEventListener('click', () => {
+    const valor = boton.dataset.valor;
+
+    if (valor) {
+      operacion += valor;
+      actualizarPantalla(operacion);
+    } else if (boton.id === 'igual') {
+      try {
+        // Evaluar la operación completa
+        const resultado = eval(operacion);
+        actualizarPantalla(resultado);
+        operacion = resultado.toString();
+      } catch (error) {
+        actualizarPantalla('Error');
+        operacion = '';
+      }
+    } else if (boton.id === 'limpiar') {
+      operacion = '';
+      actualizarPantalla('');
+    }
+  });
+});
